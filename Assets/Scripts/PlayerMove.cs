@@ -163,7 +163,7 @@ public class PlayerMove : MonoBehaviour
     {
         
 
-        if (Input.GetAxis("Vertical") > 0)
+        if (Input.GetAxisRaw ("Vertical") > 0)
         {
             
          

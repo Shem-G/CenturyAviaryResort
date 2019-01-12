@@ -12,10 +12,11 @@ public class billboardScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        Vector3 angle = new Vector3(0, Camera.main.transform.position.y, 0);
 
-		for(int i = 0; i < objects.Length; i++)
+        for (int i = 0; i < objects.Length; i++)
         {
-            objects[i].LookAt(Camera.main.transform.position, Vector3.up);
+            objects[i].LookAt(angle, Vector3.up);
         }
 	}
 }
