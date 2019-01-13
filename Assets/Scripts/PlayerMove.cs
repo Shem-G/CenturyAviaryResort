@@ -6,7 +6,7 @@ using UnityStandardAssets.CrossPlatformInput;
 public class PlayerMove : MonoBehaviour
 {
 
-    public float moveSpeed = 10;
+    public float moveSpeed = 15;
     public float accelValue = 0.5f;
     public float decelValue = 1;
     public float curSpeed;
@@ -59,6 +59,15 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if(Input.GetMouseButton(0))
+        {
+            moveSpeed = 40;
+        }
+        else
+        {
+            moveSpeed = 15;
+        }
 
         if (Input.GetMouseButtonDown(2))
         {
