@@ -63,7 +63,10 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\billboardScript.cs" />
     <Compile Include="Assets\Scripts\BinocularView.cs" />
+    <Compile Include="Assets\Scripts\birdObject.cs" />
+    <Compile Include="Assets\Scripts\HiResScreenShots.cs" />
     <Compile Include="Assets\Scripts\PlayerMove.cs" />
+    <Compile Include="Assets\Scripts\Scriptable Objects\Birds\bird.cs" />
     <None Include="Assets\Shaders\Cg  shader for billboards.shader" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/Shem/Documents/Virtual Bird Observer/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>

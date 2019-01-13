@@ -12,14 +12,28 @@ public class BinocularView : MonoBehaviour {
     private bool isZoomed = false;
     public Camera cam;
 
+    public float scroll;
+
+    public int[] zoomLevel;
+
+
     // Use this for initialization
     void Start () {
         cam = GetComponent<Camera>();
         bino.SetActive(false);
-	}
+        zoomLevel = new int[4];
+        zoomLevel[0] = 0;
+        zoomLevel[1] = 1;
+        zoomLevel[2] = 2;
+        zoomLevel[3] = 3;
+    }
 	
 	// Update is called once per frame
 	void Update () {
+
+        scroll = Input.mouseScrollDelta.y;
+
+
         if (Input.GetMouseButtonDown(2))
         {
             isZoomed = !isZoomed;

@@ -45,6 +45,7 @@ public class PlayerMove : MonoBehaviour
     private Quaternion orgRot;
     private Quaternion zeroRot;
 
+    public int zoomLevel = 0;
 
     // Use this for initialization
     void Start()
@@ -60,6 +61,7 @@ public class PlayerMove : MonoBehaviour
     void Update()
     {
 
+
         if(Input.GetMouseButton(0))
         {
             moveSpeed = 40;
@@ -71,7 +73,35 @@ public class PlayerMove : MonoBehaviour
 
         if (Input.GetMouseButtonDown(2))
         {
-            isZoomed = !isZoomed;
+            switch (zoomLevel)
+            {
+                case 0:
+                    isZoomed = true;
+                    zoom = 50;
+                    zoomLevel++;
+                    break;
+                case 1:
+                    isZoomed = true;
+                    zoom = 40;
+                    zoomLevel++;
+                    break;
+                case 2:
+                    isZoomed = true;
+                    zoom = 20;
+                    zoomLevel++;
+                    break;
+                case 3:
+                    isZoomed = true;
+                    zoom = 10;
+                    zoomLevel++;
+                    break;
+                case 4:
+                    isZoomed = false;
+                    zoom = normal;
+                    zoomLevel = 0;
+                    break;
+            }
+           
         }
 
         if (isZoomed)
@@ -79,6 +109,7 @@ public class PlayerMove : MonoBehaviour
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, zoom, Time.deltaTime * smooth);
             bino.SetActive(true);
             MouseLook();
+            DetectBird();
         }
 
         else
@@ -90,6 +121,15 @@ public class PlayerMove : MonoBehaviour
             bino.SetActive(false);
             Move();
         }
+        Debug.DrawRay(cam.transform.position, cam.transform.forward * 100, Color.red);
+    }
+
+    void DetectBird()
+    {
+        Vector3 fwd = cam.transform.TransformDirection(Vector3.forward);
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, 10))
+            Debug.Log("bird");
+        
     }
 
     void MouseLook()
