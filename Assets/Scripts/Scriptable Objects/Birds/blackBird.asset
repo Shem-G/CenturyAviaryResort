@@ -13,6 +13,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   birdName: Blackbird
   scientificName: Turdus merula
-  Description: 
-  Biome: House & Garden
+  description: 
+  biome: 
   picture: {fileID: 0}

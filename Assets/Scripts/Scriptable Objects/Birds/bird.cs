@@ -5,7 +5,7 @@ using UnityEngine;
 public class bird : MonoBehaviour {
 
     [SerializeField]
-    private birdObject BirdData;
+    public birdObject BirdData;
 
 
     private void Update()

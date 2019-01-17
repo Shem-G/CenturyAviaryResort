@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerMove : MonoBehaviour
@@ -23,6 +24,7 @@ public class PlayerMove : MonoBehaviour
     public float zoom = 20;
     public float normal = 60;
     public float smooth = 5;
+    public float scanDist = 15;
 
     public GameObject bino;
     public bool isZoomed = false;
@@ -47,6 +49,17 @@ public class PlayerMove : MonoBehaviour
 
     public int zoomLevel = 0;
 
+    private bird targetBird;
+    public Text birdName;
+
+    private bool takeHiResShot = false;
+    public Canvas canvas;
+    public Transform flash;
+    public int resWidth = 320;
+    public int resHeight = 240;
+
+    public RenderTexture gameRender;
+
     // Use this for initialization
     void Start()
     {
@@ -55,6 +68,7 @@ public class PlayerMove : MonoBehaviour
         cam = GetComponentInChildren<Camera>();
         m_OriginalRotation = transform.localRotation;
         bino.SetActive(false);
+        birdName.text = "";
     }
 
     // Update is called once per frame
@@ -78,26 +92,31 @@ public class PlayerMove : MonoBehaviour
                 case 0:
                     isZoomed = true;
                     zoom = 50;
+                    scanDist = 8;
                     zoomLevel++;
                     break;
                 case 1:
                     isZoomed = true;
                     zoom = 40;
+                    scanDist = 10;
                     zoomLevel++;
                     break;
                 case 2:
                     isZoomed = true;
                     zoom = 20;
+                    scanDist = 20;
                     zoomLevel++;
                     break;
                 case 3:
                     isZoomed = true;
                     zoom = 10;
+                    scanDist = 35;
                     zoomLevel++;
                     break;
                 case 4:
                     isZoomed = false;
                     zoom = normal;
+                    scanDist = 8;
                     zoomLevel = 0;
                     break;
             }
@@ -114,22 +133,43 @@ public class PlayerMove : MonoBehaviour
 
         else
         {
+            //birdName.text = "";
             m_TargetAngles = Vector3.zero;
             m_FollowAngles = Vector3.zero;
             cam.transform.localRotation = zeroRot;
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, normal, Time.deltaTime * smooth);
             bino.SetActive(false);
+            birdName.text = "";
             Move();
         }
-        Debug.DrawRay(cam.transform.position, cam.transform.forward * 100, Color.red);
+        Debug.DrawRay(cam.transform.position, cam.transform.forward * scanDist, Color.red);
     }
 
     void DetectBird()
     {
         Vector3 fwd = cam.transform.TransformDirection(Vector3.forward);
-        if (Physics.Raycast(cam.transform.position, cam.transform.forward, 10))
-            Debug.Log("bird");
-        
+        RaycastHit hit;
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, scanDist))
+        {
+            if (hit.collider.tag == "Bird")
+            {
+                Debug.Log("Bird");
+                float dist = Vector3.Distance(cam.transform.position, hit.transform.position);
+                Debug.Log("Distance: " + dist);
+                targetBird = hit.transform.GetComponent<bird>();
+                birdName.text = targetBird.BirdData.BirdName;
+            }
+            else
+            {
+                Debug.Log("Not bird");
+                birdName.text = "";
+            }
+        }
+        else
+        {
+            birdName.text = "";
+        }
+
     }
 
     void MouseLook()
@@ -237,5 +277,59 @@ public class PlayerMove : MonoBehaviour
 
         //transform.Rotate(new Vector3(0, Input.GetAxis("Mouse X"), 0 ));
         curSpeed = Mathf.Clamp(curSpeed, 0, moveSpeed);
+    }
+
+    public static string ScreenShotName(int width, int height)
+    {
+        return string.Format("{0}/screenshots/screen_{1}x{2}_{3}.png",
+                             Application.dataPath,
+                             width, height,
+                             System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss"));
+    }
+
+    public void TakeHiResShot()
+    {
+        takeHiResShot = true;
+    }
+
+    void LateUpdate()
+    {
+        if (isZoomed)
+        {
+            takeHiResShot |= Input.GetKeyDown("k");
+            if (takeHiResShot)
+            {
+                canvas.enabled = false;
+                RenderTexture rt = new RenderTexture(resWidth, resHeight, 24);
+                cam.targetTexture = rt;
+                Texture2D screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);
+                cam.Render();
+                RenderTexture.active = rt;
+                screenShot.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
+                cam.targetTexture = gameRender;
+                RenderTexture.active = gameRender; // JC: added to avoid errors
+                Destroy(rt);
+                StartCoroutine("Flash");
+                byte[] bytes = screenShot.EncodeToPNG();
+                string filename = ScreenShotName(resWidth, resHeight);
+                System.IO.File.WriteAllBytes(filename, bytes);
+                Debug.Log(string.Format("Took screenshot to: {0}", filename));
+                takeHiResShot = false;
+                canvas.enabled = true;
+
+            }
+        }
+        else
+        {
+
+        }
+    }
+
+
+    IEnumerator Flash()
+    {
+        flash.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.2f);
+        flash.gameObject.SetActive(false);
     }
 }
