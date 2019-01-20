@@ -5,6 +5,7 @@ using UnityEngine;
 public class billboardScript : MonoBehaviour {
 
     public Transform[] objects;
+    public Camera cam;
 	// Use this for initialization
 	void Start () {
 		
@@ -12,7 +13,7 @@ public class billboardScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Vector3 angle = new Vector3(0, Camera.main.transform.position.y, 0);
+        Vector3 angle = new Vector3(0, cam.transform.position.y, 0);
 
         for (int i = 0; i < objects.Length; i++)
         {

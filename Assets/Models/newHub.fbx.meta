@@ -4,12 +4,24 @@ ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Plane
+    100004: Point
+    100006: Sun
     400000: //RootNode
+    400002: Plane
+    400004: Point
+    400006: Sun
     2100000: grass
     2100002: walls
+    2100004: lakeBase
+    2100006: Floor
     2300000: //RootNode
+    2300002: Plane
     3300000: //RootNode
+    3300002: Plane
     4300000: Plane
+    10800000: Point
+    10800002: Sun
   externalObjects: {}
   materials:
     importMaterials: 1
