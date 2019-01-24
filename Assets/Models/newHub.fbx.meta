@@ -15,6 +15,8 @@ ModelImporter:
     2100002: walls
     2100004: lakeBase
     2100006: Floor
+    2100008: grassCircle
+    2100010: circleRocks
     2300000: //RootNode
     2300002: Plane
     3300000: //RootNode
