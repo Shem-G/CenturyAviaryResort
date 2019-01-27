@@ -8,14 +8,19 @@ ModelImporter:
     100004: Plane
     100006: //RootNode
     100008: Plane.001
+    100010: Point
+    100012: Sun
     400000: Camera
     400002: Lamp
     400004: Plane
     400006: //RootNode
     400008: Plane.001
+    400010: Point
+    400012: Sun
     2000000: Camera
     2100000: lowerSoil
     2100002: canopy
+    2100004: forestWall
     2300000: Plane
     2300002: Plane.001
     3300000: Plane
@@ -23,6 +28,8 @@ ModelImporter:
     4300000: Plane
     4300002: Plane.001
     10800000: Lamp
+    10800002: Point
+    10800004: Sun
   externalObjects: {}
   materials:
     importMaterials: 1
