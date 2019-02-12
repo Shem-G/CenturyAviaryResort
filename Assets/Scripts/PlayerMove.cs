@@ -78,7 +78,7 @@ public class PlayerMove : MonoBehaviour
 
         if(Input.GetMouseButton(0))
         {
-            moveSpeed = 40;
+            moveSpeed = moveSpeed * 4;
         }
         else
         {
